@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <weka.version>3.9.1</weka.version>
+        <weka.version>3.9.4</weka.version>
         <apache.poi.version>4.0.0</apache.poi.version>
         <org-apache-commons.version>3.7</org-apache-commons.version>
         <commons.io.version>2.5</commons.io.version>

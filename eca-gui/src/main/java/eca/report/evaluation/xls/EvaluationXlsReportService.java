@@ -41,6 +41,8 @@ import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.util.List;
 
+import static eca.util.Utils.getFormattedEvaluationValueOrMissing;
+
 /**
  * Implements classification results saving into xls, xlsx file.
  *
@@ -66,7 +68,7 @@ public class EvaluationXlsReportService extends AbstractEvaluationReportService 
     private static final String PREDICTED_VALUE_FORMAT = "%s (Прогнозное)";
     private static final String[] COST_CLASSIFICATION_HEADER =
             {"Класс", "TPR", "FPR", "TNR", "FNR", "Полнота", "Точность", "F - мера", "AUC"};
-    private static final String NAN = "NaN";
+    private static final String MISSING_VALUE = "-";
     private static final String DOUBLE_FORMAT = "^[-]?[0-9]*[,]?[0-9]*$";
 
     private static final int CLASS_COL_IDX = 0;
@@ -203,7 +205,7 @@ public class EvaluationXlsReportService extends AbstractEvaluationReportService 
 
     private void setCellValue(Cell cell, String value) {
         try {
-            if (value.matches(DOUBLE_FORMAT)) {
+            if (!MISSING_VALUE.equals(value) && value.matches(DOUBLE_FORMAT)) {
                 cell.setCellValue(getDecimalFormat().parse(value).doubleValue());
             } else {
                 cell.setCellValue(value);
@@ -335,17 +337,24 @@ public class EvaluationXlsReportService extends AbstractEvaluationReportService 
                 setCellValue(cell, getDecimalFormat().format(evaluation.falseNegativeRate(classIndex)));
                 break;
             case RECALL_COL_IDX:
-                setCellValue(cell, getDecimalFormat().format(evaluation.recall(classIndex)));
+                String recall = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.recall(classIndex),
+                        getDecimalFormat(), MISSING_VALUE);
+                setCellValue(cell, recall);
                 break;
             case PRECISION_COL_IDX:
-                setCellValue(cell, getDecimalFormat().format(evaluation.precision(classIndex)));
+                String precision = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.precision(classIndex),
+                        getDecimalFormat(), MISSING_VALUE);
+                setCellValue(cell, precision);
                 break;
             case FM_COL_IDX:
-                setCellValue(cell, getDecimalFormat().format(evaluation.fMeasure(classIndex)));
+                String fMeasure = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.fMeasure(classIndex),
+                        getDecimalFormat(), MISSING_VALUE);
+                setCellValue(cell, fMeasure);
                 break;
             case AUC_COL_IDX:
-                double aucValue = evaluation.areaUnderROC(classIndex);
-                setCellValue(cell, Double.isNaN(aucValue) ? NAN : getDecimalFormat().format(aucValue));
+                String auc = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.areaUnderROC(classIndex),
+                        getDecimalFormat(), MISSING_VALUE);
+                setCellValue(cell, auc);
                 break;
             default:
                 throw new IllegalStateException("Unexpected column index!");
