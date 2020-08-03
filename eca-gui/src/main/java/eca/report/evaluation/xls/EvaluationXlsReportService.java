@@ -337,9 +337,7 @@ public class EvaluationXlsReportService extends AbstractEvaluationReportService 
                 setCellValue(cell, getDecimalFormat().format(evaluation.falseNegativeRate(classIndex)));
                 break;
             case RECALL_COL_IDX:
-                String recall = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.recall(classIndex),
-                        getDecimalFormat(), MISSING_VALUE);
-                setCellValue(cell, recall);
+                setCellValue(cell, getDecimalFormat().format(evaluation.recall(classIndex)));
                 break;
             case PRECISION_COL_IDX:
                 String precision = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.precision(classIndex),

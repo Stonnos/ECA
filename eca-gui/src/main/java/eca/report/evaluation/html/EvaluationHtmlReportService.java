@@ -123,9 +123,7 @@ public class EvaluationHtmlReportService extends AbstractEvaluationReportService
                         record.setFpRate(getDecimalFormat().format(evaluation.falsePositiveRate(i)));
                         record.setTnRate(getDecimalFormat().format(evaluation.trueNegativeRate(i)));
                         record.setFnRate(getDecimalFormat().format(evaluation.falseNegativeRate(i)));
-                        String recall =
-                                getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.recall(i), getDecimalFormat(),
-                                        MISSING_VALUE);
+                        record.setRecall(getDecimalFormat().format(evaluation.recall(i)));
                         String precision =
                                 getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.precision(i), getDecimalFormat(),
                                         MISSING_VALUE);
@@ -135,7 +133,6 @@ public class EvaluationHtmlReportService extends AbstractEvaluationReportService
                         String auc =
                                 getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.areaUnderROC(i), getDecimalFormat(),
                                         MISSING_VALUE);
-                        record.setRecall(recall);
                         record.setPrecision(precision);
                         record.setFMeasure(fMeasure);
                         record.setAucValue(auc);

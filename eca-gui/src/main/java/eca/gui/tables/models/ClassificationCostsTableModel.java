@@ -71,8 +71,7 @@ public class ClassificationCostsTableModel extends AbstractTableModel {
             values[i][FP_IDX] = format.format(evaluation.falsePositiveRate(i));
             values[i][TN_IDX] = format.format(evaluation.trueNegativeRate(i));
             values[i][FN_IDX] = format.format(evaluation.falseNegativeRate(i));
-            values[i][RECALL_IDX] =
-                    getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.recall(j), format, MISSING_VALUE);
+            values[i][RECALL_IDX] = format.format(evaluation.recall(i));
             values[i][PRECISION_IDX] = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.precision(j), format,
                     MISSING_VALUE);
             values[i][F_MEASURE_IDX] = getFormattedEvaluationValueOrMissing(evaluation, ev -> ev.fMeasure(j), format,
